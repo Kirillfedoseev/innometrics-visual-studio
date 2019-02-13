@@ -1,41 +1,45 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Client
 {
-    public class Client
+    public class Client:IDisposable
     {
-        public Uri ApiUrl { get; } = new Uri("https://innometric.guru:8120");
+        private readonly Uri _apiUrl = new Uri("https://innometric.guru:8120");
 
-        public string Username { get; }
-        public string Password { get; }
+        private HttpClient ApiClient { get; }
 
-        public HttpClient ApiClient;
-       
+
 
         public Client(string username, string password)
         {
-            Username = username;
-            Password = password;
-            ApiClient = new HttpClient {BaseAddress = ApiUrl};
-            ApiClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GetAuthToken());
+            ApiClient = new HttpClient {BaseAddress = _apiUrl};
+
+            string authToken = GetAuthToken(username, password);
+
+            ApiClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
         }
 
 
-        public string GetAuthToken()
+        public void SendActivities(List<Activity> activities)
+        {
+            foreach (Activity activity in activities)
+            {
+                AddActivity(activity);
+            }
+        }
+
+
+
+        private string GetAuthToken(string username, string password)
         {
             var values = new Dictionary<string, string>
             {
-                { "email", Username },
-                { "password", Password }
+                { "email", username },
+                { "password", password }
             };
 
             var content = new FormUrlEncodedContent(values);
@@ -48,38 +52,23 @@ namespace Client
            return (string)JObject.Parse(resp)["token"];
         }
 
-
-
-        public string RegisterUser()
+        private void AddActivity(Activity activity)
         {
+            var content = new FormUrlEncodedContent(activity.GetDictinary());
+            var response = ApiClient.PostAsync("/activity", content).Result;
+            if (!response.IsSuccessStatusCode) return;
+        }
 
-            var response = ApiClient.GetAsync("/activity?offset=10&amount_to_return=10").Result;
+        private void Logout()
+        {
+            var response = ApiClient.PostAsync("/logout", null).Result;
+            if (!response.IsSuccessStatusCode) return;
+        }
 
-            if (!response.IsSuccessStatusCode) return null;
-            var resp = response.Content.ReadAsStringAsync().Result;
-            return (string)JObject.Parse(resp)["token"];
-
-
-            //var values = new Dictionary<string, string>
-            //{
-            //    { "username", Username },
-            //    { "password", Password }
-            //};
-            //var content = new FormUrlEncodedContent(values);
-            //Console.WriteLine(content);
-
-            //HttpResponseMessage response = await ApiClient.PostAsync("/user", content);
-
-            //if (!response.IsSuccessStatusCode) return null;
-
-            //var resp = response.Content.ReadAsStringAsync().Result;
-            ////return (string)JObject.Parse(resp)["token"];
-
-
-            ////response.EnsureSuccessStatusCode();
-
-            //// return URI of the created resource.
-            //return response.Headers.Location;
+        public void Dispose()
+        {
+            Logout();
+            ApiClient?.Dispose();
         }
     }
 
