@@ -5,11 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogInForm"
         mc:Ignorable="d"
-        Title="Innometrics Login" Height="300" Width="420"  MouseLeftButtonDown="Window_MouseLeftButtonDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="420" MinHeight="300" MaxHeight="300" MaxWidth="420" ResizeMode="NoResize" Icon="842382_multimedia_512x512.png" AllowsTransparency="True" WindowStyle="None" Closed="Window_Closed">
+        Title="Innometrics Login" Height="300" Width="420"  MouseLeftButtonDown="Window_MouseLeftButtonDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="420" MinHeight="300" MaxHeight="300" MaxWidth="420" ResizeMode="NoResize" Icon="842382_multimedia_512x512.png" Closed="Window_Closed" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <Window.Foreground>
         <SolidColorBrush Color="Black" Opacity="0.9"/>
     </Window.Foreground>
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="420" MaxHeight="300" Margin="0" Width="420" Height="300" MinWidth="420" MinHeight="300">
+
+
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="420" MaxHeight="300" Margin="0" Width="420" Height="300" MinWidth="420" MinHeight="300" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}">
+        <Border BorderThickness="1,1,1,1" BorderBrush="Gray"/>
         <Button Name="Exit" Margin="0" BorderBrush="{x:Null}"  HorizontalAlignment="Right" VerticalAlignment="Top" Width="32" Height="32" Click="Exit_Click" ClickMode="Press" BorderThickness="0">
             <Button.Background>
                 <ImageBrush ImageSource="cancel_circle-512.png" Opacity="0.8"/>

@@ -100,10 +100,14 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="cancel_circle-512.png" />
+    <Resource Include="cancel_circle-512.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="cancel_circle_press-512.png" />
+    <Resource Include="cancel_circle_press-512.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Client\ApiClient.csproj">
