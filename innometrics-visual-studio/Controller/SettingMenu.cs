@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Globalization;
+using innometrics_visual_studio.Model;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -10,7 +11,7 @@ namespace innometrics_visual_studio
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class SettingMenu
+    public sealed partial class SettingMenu
     {
         /// <summary>
         /// Command ID.
@@ -41,6 +42,8 @@ namespace innometrics_visual_studio
             var menuCommandID = new CommandID(CommandSet, CommandId);
             var menuItem = new MenuCommand(this.Execute, menuCommandID);
             commandService.AddCommand(menuItem);
+
+            _dataManager = new DataManager();
         }
 
         /// <summary>
@@ -100,4 +103,6 @@ namespace innometrics_visual_studio
                 OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }
     }
+
+    
 }

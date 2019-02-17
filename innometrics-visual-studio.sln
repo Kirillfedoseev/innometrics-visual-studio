@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiClient", "Client\ApiClie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "innometrics-visual-studio", "innometrics-visual-studio\innometrics-visual-studio.csproj", "{52D9575E-FA83-4F42-903E-254B2F0C9E9E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogInForm", "LogInForm\LogInForm.csproj", "{E8D88823-8561-4CD6-9549-DA52034E13CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{CF714C61-F9A0-449E-BA24-506BFDF36F6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{52D9575E-FA83-4F42-903E-254B2F0C9E9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52D9575E-FA83-4F42-903E-254B2F0C9E9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52D9575E-FA83-4F42-903E-254B2F0C9E9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8D88823-8561-4CD6-9549-DA52034E13CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8D88823-8561-4CD6-9549-DA52034E13CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8D88823-8561-4CD6-9549-DA52034E13CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8D88823-8561-4CD6-9549-DA52034E13CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF714C61-F9A0-449E-BA24-506BFDF36F6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF714C61-F9A0-449E-BA24-506BFDF36F6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF714C61-F9A0-449E-BA24-506BFDF36F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF714C61-F9A0-449E-BA24-506BFDF36F6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
