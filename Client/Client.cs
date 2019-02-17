@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Authentication;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Client
@@ -13,25 +17,64 @@ namespace Client
         private HttpClient ApiClient { get; }
 
 
-
-        public Client(string username, string password)
+        public Client()
         {
             ApiClient = new HttpClient {BaseAddress = _apiUrl};
+        }
 
+
+        public void LogIn(string username, string password)
+        {
             string authToken = GetAuthToken(username, password);
-
             ApiClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
         }
 
 
-        public void SendActivities(List<Activity> activities)
+        public void LogOut()
         {
-            foreach (Activity activity in activities)
-            {
-                AddActivity(activity);
-            }
+            var response = ApiClient.PostAsync("/logout", null).Result;
+            if (!response.IsSuccessStatusCode) return;
         }
 
+
+        public void SendMetrics(List<IMetric> metrics)
+        {
+            var content = new FormUrlEncodedContent(
+                new Dictionary<string,string>(1)
+                {
+                    {"activity", MetricsToJson(metrics).ToString()}
+                });
+            
+            var response = ApiClient.PostAsync("/activity", content).Result;
+            if (!response.IsSuccessStatusCode)
+                throw new AuthenticationException($"Activity post failed with error: {response.StatusCode} {response.ReasonPhrase} ");
+        }
+
+
+        //todo change if format incorrec
+        private JObject MetricsToJson(List<IMetric> metrics)
+        {
+            JArray jArray = new JArray();
+            foreach (IMetric metric in metrics)
+            {
+                JObject json = new JObject()
+                {
+                    {"executable_name", metric.ExecutableName},
+                    {"start_time ", metric.StartTime.ToString(CultureInfo.InvariantCulture)},
+                    {"end_time", metric.EndTime.ToString(CultureInfo.InvariantCulture)},
+                    {"ip_address", metric.Ip4Address},
+                    {"mac_address", metric.MacAddress},
+                    {"activity_type", metric.ActivityType},
+                    {"value", metric.Value}
+                };
+                jArray.Add(json);
+            }
+
+            JObject data = new JObject {{"activities", jArray}};
+
+            Console.WriteLine(data.ToString(Formatting.Indented));
+            return data;
+        }
 
 
         private string GetAuthToken(string username, string password)
@@ -45,29 +88,18 @@ namespace Client
             var content = new FormUrlEncodedContent(values);
             var response = ApiClient.PostAsync("/login", content).Result;
 
-            if (!response.IsSuccessStatusCode) return null;
+            if (!response.IsSuccessStatusCode)
+                throw new AuthenticationException($"Login failed with error: {response.StatusCode} {response.ReasonPhrase} ");
 
             var resp = response.Content.ReadAsStringAsync().Result;
 
-           return (string)JObject.Parse(resp)["token"];
+            return (string)JObject.Parse(resp)["token"];
         }
 
-        private void AddActivity(Activity activity)
-        {
-            var content = new FormUrlEncodedContent(activity.GetDictinary());
-            var response = ApiClient.PostAsync("/activity", content).Result;
-            if (!response.IsSuccessStatusCode) return;
-        }
-
-        private void Logout()
-        {
-            var response = ApiClient.PostAsync("/logout", null).Result;
-            if (!response.IsSuccessStatusCode) return;
-        }
 
         public void Dispose()
         {
-            Logout();
+            LogOut();
             ApiClient?.Dispose();
         }
     }

@@ -1,10 +1,20 @@
-﻿namespace Client
+﻿using System.Collections.Generic;
+
+namespace Client
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var client = new Client("kirill1998fed@yandex.ru", "fkmlbyf123");
+            var client = new Client();
+            client.LogIn("kirill1998fed@yandex.ru", "fkmlbyf123");
+
+            var list = new List<IMetric>()
+            {
+                new TestMetric(),
+                new TestMetric(),
+            };
+            //client.SendMetrics(list);
 
             client.Dispose();
         }
