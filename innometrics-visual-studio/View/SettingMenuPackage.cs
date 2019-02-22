@@ -54,7 +54,7 @@ namespace innometrics_visual_studio
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
         }
-
+        
         #region Package Members
 
         /// <summary>
@@ -70,6 +70,7 @@ namespace innometrics_visual_studio
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await SettingMenu.InitializeAsync(this);
+            await Command1.InitializeAsync(this);
         }
 
         #endregion

@@ -1,18 +1,21 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Windows;
 using innometrics_visual_studio.Model;
 using LogInForm;
 
 namespace innometrics_visual_studio
 {
-    public sealed partial class SettingMenu
+    public class MenuController
     {
 
         private static App app;
 
         private DataManager _dataManager;
 
+        public MenuController()
+        {
+            _dataManager = new DataManager();
+        }
 
         private void OnLogoutClick()
         {
