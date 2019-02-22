@@ -9,7 +9,7 @@ using System.Security.Authentication;
 
 namespace innometrics_visual_studio.Model
 {
-    class DataManager
+    public class DataManager
     {
         public bool IsAuthenticated { get; private set; }
 

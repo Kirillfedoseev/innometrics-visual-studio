@@ -1,4 +1,5 @@
-﻿using innometrics_visual_studio.Model.Metrics;
+﻿
+using innometrics_visual_studio.Model.Metrics;
 
 namespace innometrics_visual_studio.Controller
 {
