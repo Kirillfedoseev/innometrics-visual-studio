@@ -1,19 +1,12 @@
 ﻿using System;
-using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.OLE.Interop;
+using innometrics_visual_studio.View.Commands;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.Win32;
 using Task = System.Threading.Tasks.Task;
 
-namespace innometrics_visual_studio
+namespace innometrics_visual_studio.View
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -36,6 +29,7 @@ namespace innometrics_visual_studio
     [InstalledProductRegistration("#1110", "#1112", "1.0", IconResourceID = 1400)] // Info on this package for Help/About
     [Guid(InnoMetricsMenu.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    [ProvideMenuResource("Menus.ctmenu", 1)]
     public sealed class InnoMetricsMenu : AsyncPackage
     {
         /// <summary>
@@ -67,7 +61,9 @@ namespace innometrics_visual_studio
         {
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
-            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            await LogIn.InitializeAsync(this);
+            await LogOut.InitializeAsync(this);
         }
 
         #endregion

@@ -1,23 +1,21 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
-namespace innometrics_visual_studio
+namespace innometrics_visual_studio.View.Commands
 {
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class LogIn
+    internal sealed class LogOut
     {
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 0x0100;
+        public const int CommandId = 4129;
 
         /// <summary>
         /// Command menu group (command set GUID).
@@ -30,12 +28,12 @@ namespace innometrics_visual_studio
         private readonly AsyncPackage package;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogIn"/> class.
+        /// Initializes a new instance of the <see cref="LogOut"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
-        private LogIn(AsyncPackage package, OleMenuCommandService commandService)
+        private LogOut(AsyncPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
@@ -48,7 +46,7 @@ namespace innometrics_visual_studio
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static LogIn Instance
+        public static LogOut Instance
         {
             get;
             private set;
@@ -71,12 +69,12 @@ namespace innometrics_visual_studio
         /// <param name="package">Owner package, not null.</param>
         public static async Task InitializeAsync(AsyncPackage package)
         {
-            // Switch to the main thread - the call to AddCommand in LogIn's constructor requires
+            // Switch to the main thread - the call to AddCommand in LogOut's constructor requires
             // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
-            Instance = new LogIn(package, commandService);
+            Instance = new LogOut(package, commandService);
         }
 
         /// <summary>
@@ -90,7 +88,7 @@ namespace innometrics_visual_studio
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            string title = "LogIn";
+            string title = "LogOut";
 
             // Show a message box to prove we were here
             VsShellUtilities.ShowMessageBox(
