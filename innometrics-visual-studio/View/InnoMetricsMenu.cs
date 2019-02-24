@@ -37,6 +37,8 @@ namespace innometrics_visual_studio.View
         /// </summary>
         public const string PackageGuidString = "2fe52e27-a160-48be-b065-4bb5bdec6b0c";
 
+        public MenuController Controller;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="InnoMetricsMenu"/> class.
         /// </summary>
@@ -46,6 +48,9 @@ namespace innometrics_visual_studio.View
             // any Visual Studio service because at this point the package object is created but
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
+
+
+            Controller = new MenuController();
         }
 
         #region Package Members
@@ -64,6 +69,8 @@ namespace innometrics_visual_studio.View
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await LogIn.InitializeAsync(this);
             await LogOut.InitializeAsync(this);
+            await innometrics_visual_studio.View.SendData.InitializeAsync(this);
+            await innometrics_visual_studio.View.ResumeSendData.InitializeAsync(this);
         }
 
         #endregion

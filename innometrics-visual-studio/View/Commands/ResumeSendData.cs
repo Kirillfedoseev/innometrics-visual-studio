@@ -3,17 +3,17 @@ using System.ComponentModel.Design;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 
-namespace innometrics_visual_studio.View.Commands
+namespace innometrics_visual_studio.View
 {
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class LogIn
+    internal sealed class ResumeSendData
     {
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 0x0100;
+        public const int CommandId = 4131;
 
         /// <summary>
         /// Command menu group (command set GUID).
@@ -26,12 +26,12 @@ namespace innometrics_visual_studio.View.Commands
         private readonly InnoMetricsMenu package;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogIn"/> class.
+        /// Initializes a new instance of the <see cref="ResumeSendData"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
-        private LogIn(AsyncPackage package, OleMenuCommandService commandService)
+        private ResumeSendData(AsyncPackage package, OleMenuCommandService commandService)
         {
             this.package = package as InnoMetricsMenu ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
@@ -44,7 +44,7 @@ namespace innometrics_visual_studio.View.Commands
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static LogIn Instance
+        public static ResumeSendData Instance
         {
             get;
             private set;
@@ -61,12 +61,12 @@ namespace innometrics_visual_studio.View.Commands
         /// <param name="package">Owner package, not null.</param>
         public static async Task InitializeAsync(AsyncPackage package)
         {
-            // Switch to the main thread - the call to AddCommand in LogIn's constructor requires
+            // Switch to the main thread - the call to AddCommand in ResumeSendData's constructor requires
             // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
-            Instance = new LogIn(package, commandService);
+            Instance = new ResumeSendData(package, commandService);
         }
 
         /// <summary>
@@ -79,8 +79,7 @@ namespace innometrics_visual_studio.View.Commands
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            package.Controller.OnLogInClick();
-            
+            package.Controller.OnResumeSendData();
         }
     }
 }

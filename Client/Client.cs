@@ -21,7 +21,10 @@ namespace ApiClient
                     bool result;
                     using (var client = new Client())
                     {
-                        result = client.GetAuthToken(username, password) != null;
+                        var authToken = client.GetAuthToken(username, password);
+                        client.ApiClient.DefaultRequestHeaders.Authorization 
+                            = new AuthenticationHeaderValue("Bearer", authToken);
+                        result = authToken != null;
                     }
                     return result;
                 }
@@ -101,7 +104,7 @@ namespace ApiClient
                 throw new AuthenticationException($"Login failed with error: {response.StatusCode} {response.ReasonPhrase} ");
 
             var resp = response.Content.ReadAsStringAsync().Result;
-
+            
             return (string)JObject.Parse(resp)["token"];
         }
 

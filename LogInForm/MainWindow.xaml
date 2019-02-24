@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogInForm"
         mc:Ignorable="d"
-        Title="Innometrics Login" Height="300" Width="420"  MouseLeftButtonDown="Window_MouseLeftButtonDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="420" MinHeight="300" MaxHeight="300" MaxWidth="420" ResizeMode="NoResize" Icon="842382_multimedia_512x512.png" Closed="Window_Closed" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="Innometrics Login" Height="300" Width="420"  MouseLeftButtonDown="Window_MouseLeftButtonDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="420" MinHeight="300" MaxHeight="300" MaxWidth="420" ResizeMode="NoResize" Icon="Resources/842382_multimedia_512x512.png" Closed="Window_Closed" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
 
 
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="420" MaxHeight="300" Margin="0" Width="420" Height="300" MinWidth="420" MinHeight="300" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}">
@@ -14,24 +14,24 @@
 
         <Button Name="Exit" Margin="0" BorderBrush="{x:Null}"  HorizontalAlignment="Right" VerticalAlignment="Top" Width="32" Height="32" Click="Exit_Click" ClickMode="Press" BorderThickness="0">
             <Button.Background>
-                <ImageBrush ImageSource="cancel_circle-512.png" Opacity="0.8"/>
+                <ImageBrush ImageSource="Resources/cancel_circle-512.png" Opacity="0.8"/>
             </Button.Background>
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Image Name="image"
-                           Stretch="Fill" Source="cancel_circle-512.png" />
+                           Stretch="Fill" Source="Resources/cancel_circle-512.png" />
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver"
                                  Value="true">
                             <Setter TargetName="image"
                                     Property="Source"
-                                    Value="cancel_circle_press-512.png" />
+                                    Value="Resources/cancel_circle_press-512.png" />
                         </Trigger>
                         <Trigger Property="IsPressed"
                                  Value="true">
                             <Setter TargetName="image"
                                     Property="Source"
-                                    Value="cancel_circle_press-512.png" />
+                                    Value="Resources/cancel_circle_press-512.png" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -50,7 +50,6 @@ namespace innometrics_visual_studio.Model
             else
             {
                 IsAuthenticated = false;
-                throw new AuthenticationException("Incorrect Data");
             }
         }
 
@@ -83,7 +82,9 @@ namespace innometrics_visual_studio.Model
             }
             catch (Exception e)
             {
-                _authData = new AuthData();
+                //todo fix newtone.json error and change 
+                //_authData = new AuthData();
+                _authData = new AuthData("kirill1998fed@yandex.ru", "fkmlbyf123");
             }
             finally { }
 
