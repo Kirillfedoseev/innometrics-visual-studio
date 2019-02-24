@@ -69,8 +69,8 @@ namespace innometrics_visual_studio.View
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await LogIn.InitializeAsync(this);
             await LogOut.InitializeAsync(this);
-            await innometrics_visual_studio.View.SendData.InitializeAsync(this);
-            await innometrics_visual_studio.View.ResumeSendData.InitializeAsync(this);
+            await SendData.InitializeAsync(this);
+            await ResumeSendData.InitializeAsync(this);
         }
 
         #endregion

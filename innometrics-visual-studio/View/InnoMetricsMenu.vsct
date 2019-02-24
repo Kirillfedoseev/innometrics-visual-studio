@@ -31,14 +31,57 @@
     group; your package should define its own command set in order to avoid collisions
     with command ids defined by other packages. -->
 
+    <Menus>
+      <Menu guid="guidInnoMetricsMenuCmdSet" id="InnoMetricsMenu" priority="0x700" type="Menu">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_MM_TOOLSADDINS" />
+        <Strings>
+          <ButtonText>InnoMetrics</ButtonText>
+          <CommandName>InnoMetrics</CommandName>
+        </Strings>
+      </Menu>
+
+
+      <Menu guid="guidInnoMetricsMenuCmdSet" id="MetricsListSubMenu" priority="0x0100" type="Menu">
+        <Parent guid="guidInnoMetricsMenuCmdSet" id="MetricsListGroup"/>
+        <Strings>
+          <ButtonText>Metrics List</ButtonText>
+          <CommandName>MetricsList</CommandName>
+        </Strings>
+      </Menu>
+
+    </Menus>
+
+
     <!-- In this section you can define new menu groups. A menu group is a container for
          other menus or buttons (commands); from a visual point of view you can see the
          group as the part of a menu contained between two lines. The parent of a group
          must be a menu. -->
     <Groups>
-      <Group guid="guidInnoMetricsMenuCmdSet" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+      <!-- Group Metrics List-->
+      <Group guid="guidInnoMetricsMenuCmdSet" id="MetricsListGroup" priority="0x0000">
+        <Parent guid="guidInnoMetricsMenuCmdSet" id="InnoMetricsMenu"/>
       </Group>
+
+      <!-- Sub-Group Metrics List-->
+      <Group guid="guidInnoMetricsMenuCmdSet" id="SubMetricsListGroup" priority="0x0000">
+        <Parent guid="guidInnoMetricsMenuCmdSet" id="MetricsListSubMenu"/>
+      </Group>
+
+
+      <!-- Group Switching-->
+      <Group guid="guidInnoMetricsMenuCmdSet" id="SwitchingGroup" priority="0x0200">
+        <Parent guid="guidInnoMetricsMenuCmdSet" id="InnoMetricsMenu"/>
+      </Group>
+
+      <!-- Group LogIn-->
+      <Group guid="guidInnoMetricsMenuCmdSet" id="LogInGroup" priority="0x0400">
+        <Parent guid="guidInnoMetricsMenuCmdSet" id="InnoMetricsMenu"/>
+      </Group>
+
+
+      <!--<Group guid="guidInnoMetricsMenuCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+      </Group>-->
     </Groups>
 
     <!--Buttons section. -->
@@ -52,34 +95,44 @@
               <CommandFlag>DefaultInvisible</CommandFlag>
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidInnoMetricsMenuCmdSet" id="LogInId" priority="0x0100" type="Button">
-        <Parent guid="guidInnoMetricsMenuCmdSet" id="MyMenuGroup" />
-        <Icon guid="guidImages" id="bmpPic1" />
-        <Strings>
-          <ButtonText>Invoke LogIn</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="guidInnoMetricsMenuCmdSet" id="cmdidLogOut" priority="0x0100" type="Button">
-        <Parent guid="guidInnoMetricsMenuCmdSet" id="MyMenuGroup" />
-        <Icon guid="guidImages1" id="bmpPic1" />
-        <Strings>
-          <ButtonText>Invoke LogOut</ButtonText>
-        </Strings>
-      </Button>
+      
+
+
       <Button guid="guidInnoMetricsMenuCmdSet" id="cmdidSendData" priority="0x0100" type="Button">
-        <Parent guid="guidInnoMetricsMenuCmdSet" id="MyMenuGroup" />
+        <Parent guid="guidInnoMetricsMenuCmdSet" id="SwitchingGroup" />
         <Icon guid="guidImages2" id="bmpPic1" />
         <Strings>
-          <ButtonText>Invoke SendData</ButtonText>
+          <ButtonText>Continue send data</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidInnoMetricsMenuCmdSet" id="cmdidResumeSendData" priority="0x0100" type="Button">
-        <Parent guid="guidInnoMetricsMenuCmdSet" id="MyMenuGroup" />
+
+
+      <Button guid="guidInnoMetricsMenuCmdSet" id="cmdidResumeSendData" priority="0x0101" type="Button">
+        <Parent guid="guidInnoMetricsMenuCmdSet" id="SwitchingGroup" />
         <Icon guid="guidImages3" id="bmpPic1" />
         <Strings>
-          <ButtonText>Invoke ResumeSendData</ButtonText>
+          <ButtonText>Suspend send data</ButtonText>
         </Strings>
       </Button>
+
+
+      <Button guid="guidInnoMetricsMenuCmdSet" id="LogInId" priority="0x0102" type="Button">
+        <Parent guid="guidInnoMetricsMenuCmdSet" id="LogInGroup" />
+        <Icon guid="guidImages" id="bmpPic1" />
+        <Strings>
+          <ButtonText>LogIn</ButtonText>
+        </Strings>
+      </Button>
+
+
+      <Button guid="guidInnoMetricsMenuCmdSet" id="cmdidLogOut" priority="0x0103" type="Button">
+        <Parent guid="guidInnoMetricsMenuCmdSet" id="LogInGroup" />
+        <Icon guid="guidImages1" id="bmpPic1" />
+        <Strings>
+          <ButtonText>LogOut</ButtonText>
+        </Strings>
+      </Button>
+
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -102,11 +155,21 @@
 
     <!-- This is the guid used to group the menu commands together -->
     <GuidSymbol name="guidInnoMetricsMenuCmdSet" value="{94c7a0a3-4e2b-48b7-83ae-1d3a56971e4a}">
-      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <!--Menu's ids-->
+      <IDSymbol name="InnoMetricsMenu" value="0x1041"/>
+      <IDSymbol name="MetricsListSubMenu" value="0x1042"/>
+
+      <!--Group's ids-->
+      <IDSymbol name="MetricsListGroup" value="0x1121" />
+      <IDSymbol name="SubMetricsListGroup" value="0x1122"/>
+      <IDSymbol name="SwitchingGroup" value="0x1123"/>
+      <IDSymbol name="LogInGroup" value="0x1124"/>
+      
+      <!--Buttons ids-->
       <IDSymbol name="LogInId" value="0x0100" />
-      <IDSymbol value="4129" name="cmdidLogOut" />
-      <IDSymbol value="4130" name="cmdidSendData" />
-      <IDSymbol value="4131" name="cmdidResumeSendData" />
+      <IDSymbol name="cmdidLogOut" value="4129"/>
+      <IDSymbol name="cmdidSendData" value="4130"/>
+      <IDSymbol name="cmdidResumeSendData" value="4131"/>
     </GuidSymbol>
 
     <GuidSymbol name="guidImages" value="{d7d04ec8-b457-4602-b516-a4d88160017e}">

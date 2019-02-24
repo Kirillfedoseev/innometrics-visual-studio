@@ -3,7 +3,7 @@ using System.ComponentModel.Design;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 
-namespace innometrics_visual_studio.View
+namespace innometrics_visual_studio.View.Commands
 {
     /// <summary>
     /// Command handler
