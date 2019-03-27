@@ -5,7 +5,6 @@ using ApiClient;
 using innometrics_visual_studio.Controller;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Authentication;
 
 namespace innometrics_visual_studio.Model
 {
@@ -67,7 +66,7 @@ namespace innometrics_visual_studio.Model
 
         private IEnumerable<IMetric> GetAllMetrics()
         {           
-            return _activities.Select(n => n.Metric);
+            return _activities.SelectMany(n => n.Metrics);
         }
 
 

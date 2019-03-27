@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -38,9 +39,9 @@ namespace innometrics_visual_studio.Model.Metrics
             .FirstOrDefault();
 
 
-        public DateTime StartTime { get; private set; }
+        public DateTime StartTime { get; set; }
 
-        public DateTime EndTime { get; private set; }
+        public DateTime EndTime { get; set; }
 
         public string Value { get; private set; }
 
@@ -50,12 +51,14 @@ namespace innometrics_visual_studio.Model.Metrics
             ActivityType = activityType;
         }
 
-        public void UpdateMetric(int value, DateTime start, DateTime end)
+        public void UpdateMetric(int value)
         {
-            //todo add checks
-            Value = value.ToString();
-            StartTime = start;
-            EndTime = end;
-        }    
+            Value = value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public void IncrementMetric(double value = 1)
+        {
+            Value = (Convert.ToDouble(Value) + value).ToString(CultureInfo.InvariantCulture);
+        }
     }
 }

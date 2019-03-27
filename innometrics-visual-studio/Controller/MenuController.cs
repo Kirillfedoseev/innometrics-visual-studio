@@ -1,5 +1,10 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
 using System.Windows;
+using innometrics_visual_studio.Controller.ActivityControllers;
 using innometrics_visual_studio.Model;
 using LogInForm;
 
@@ -31,6 +36,7 @@ namespace innometrics_visual_studio
             }
         }
 
+        private List<AbstractActivityController> _activityControllers;
 
         private DataManager _dataManager;
 
@@ -42,6 +48,13 @@ namespace innometrics_visual_studio
         {
             _dataManager = new DataManager();
             IsLoging = false;
+            _activityControllers = new List<AbstractActivityController>();
+            var subclassTypes = Assembly.GetAssembly(typeof(AbstractActivityController)).GetTypes().Where(t => t.IsSubclassOf(typeof(AbstractActivityController)) && !t.IsAbstract);
+            foreach (var activityType in subclassTypes)
+            {
+                var activityController = Activator.CreateInstance(activityType) as AbstractActivityController;
+                _activityControllers.Add(activityController);
+            }
         }
 
 
