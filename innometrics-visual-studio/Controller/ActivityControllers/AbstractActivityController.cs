@@ -24,7 +24,10 @@ namespace innometrics_visual_studio.Controller.ActivityControllers
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             Metrics = new List<Metric>();
+
             _activityType = activityType;
+            VsShellUtilities.
+            _application = MenuController.Dte2;
             _application.Events.DocumentEvents.DocumentOpened += StartActivity;
             _application.Events.DocumentEvents.DocumentClosing += EndActivity;
             _application.Events.TextEditorEvents.LineChanged += OnChanged;

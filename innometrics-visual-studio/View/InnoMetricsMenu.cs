@@ -2,6 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Threading;
+using EnvDTE;
+using EnvDTE80;
+using innometrics_visual_studio.Controller;
 using innometrics_visual_studio.View.Commands;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
@@ -48,9 +51,8 @@ namespace innometrics_visual_studio.View
             // any Visual Studio service because at this point the package object is created but
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
-
-
-            Controller = new MenuController();
+            var dte2 = (DTE2) GetService(typeof(DTE2));
+            Controller = new MenuController(dte2);
         }
 
         #region Package Members

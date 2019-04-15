@@ -57,18 +57,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controller\ActivityControllers\AbstractActivityController.cs" />
-    <Compile Include="Controller\ActivityControllers\AddedLinesOfCodeActivityController.cs" />
-    <Compile Include="Controller\ActivityControllers\AddedLinesOfCommentsCodeActivityController.cs" />
-    <Compile Include="Controller\ActivityControllers\AddedTestsActivityController.cs" />
-    <Compile Include="Controller\ActivityControllers\ChangedLinesOfCodeActivityController.cs" />
-    <Compile Include="Controller\ActivityControllers\ChangedLinesOfCommentsActivityController.cs" />
-    <Compile Include="Controller\ActivityControllers\ChangedTestsController.cs" />
-    <Compile Include="Controller\ActivityControllers\DeletedLinesOfCodeActivityController.cs" />
-    <Compile Include="Controller\ActivityControllers\DeletedLinesOfCommentsActivityController.cs" />
-    <Compile Include="Controller\ActivityControllers\DeletedTestsActivityController.cs" />
-    <Compile Include="Controller\ActivityControllers\AbstractLinesOfCodeActivityController.cs" />
-    <Compile Include="Controller\ActivityControllers\AbstractLinesOfCommentsActivityController.cs" />
-    <Compile Include="Controller\ActivityControllers\AbstractTestsActivityController.cs" />
+    <Compile Include="Controller\ActivityControllers\LOC\AddedLinesOfCodeActivityController.cs" />
+    <Compile Include="Controller\ActivityControllers\Comments\AddedLinesOfCommentsCodeActivityController.cs" />
+    <Compile Include="Controller\ActivityControllers\Tests\AddedTestsActivityController.cs" />
+    <Compile Include="Controller\ActivityControllers\LOC\ChangedLinesOfCodeActivityController.cs" />
+    <Compile Include="Controller\ActivityControllers\Comments\ChangedLinesOfCommentsActivityController.cs" />
+    <Compile Include="Controller\ActivityControllers\Tests\ChangedTestsController.cs" />
+    <Compile Include="Controller\ActivityControllers\LOC\DeletedLinesOfCodeActivityController.cs" />
+    <Compile Include="Controller\ActivityControllers\Comments\DeletedLinesOfCommentsActivityController.cs" />
+    <Compile Include="Controller\ActivityControllers\Tests\DeletedTestsActivityController.cs" />
+    <Compile Include="Controller\ActivityControllers\LOC\AbstractLinesOfCodeActivityController.cs" />
+    <Compile Include="Controller\ActivityControllers\Comments\AbstractLinesOfCommentsActivityController.cs" />
+    <Compile Include="Controller\ActivityControllers\Tests\AbstractTestsActivityController.cs" />
+    <Compile Include="Controller\Support.cs" />
     <Compile Include="View\Commands\LogOut.cs" />
     <Compile Include="Controller\MenuController.cs" />
     <Compile Include="View\InnoMetricsMenu.cs" />

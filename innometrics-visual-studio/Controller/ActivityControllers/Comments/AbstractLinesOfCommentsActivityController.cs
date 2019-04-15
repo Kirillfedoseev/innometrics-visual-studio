@@ -1,4 +1,5 @@
 ﻿using EnvDTE;
+using EnvDTE80;
 using innometrics_visual_studio.Model.Metrics;
 using Microsoft.VisualStudio.Shell;
 

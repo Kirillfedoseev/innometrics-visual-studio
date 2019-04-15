@@ -4,11 +4,12 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using EnvDTE80;
 using innometrics_visual_studio.Controller.ActivityControllers;
 using innometrics_visual_studio.Model;
 using LogInForm;
 
-namespace innometrics_visual_studio
+namespace innometrics_visual_studio.Controller
 {
     public class MenuController
     {
@@ -44,11 +45,14 @@ namespace innometrics_visual_studio
 
         public bool IsCanSendData { get; private set; }
 
-        public MenuController()
+        public static DTE2 Dte2;
+
+        public MenuController(DTE2 dte2)
         {
             _dataManager = new DataManager();
             IsLoging = false;
             _activityControllers = new List<AbstractActivityController>();
+            Dte2 = dte2;
             var subclassTypes = Assembly.GetAssembly(typeof(AbstractActivityController)).GetTypes().Where(t => t.IsSubclassOf(typeof(AbstractActivityController)) && !t.IsAbstract);
             foreach (var activityType in subclassTypes)
             {
