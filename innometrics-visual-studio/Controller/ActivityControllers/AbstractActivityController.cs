@@ -31,6 +31,11 @@ namespace innometrics_visual_studio.Controller.ActivityControllers
         /// </summary>
         public List<Metric> Metrics { get; }
 
+        public void CleanMetricsStorage() => Metrics.Clear();
+
+        public event OnMetricsUpdated OnMetricsUpdated;
+
+
         /// <summary>
         /// Constructor of ActivityController
         /// </summary>
@@ -55,6 +60,7 @@ namespace innometrics_visual_studio.Controller.ActivityControllers
         {
             Metrics.Last().EndTime = DateTime.Now;
             IsRecording = false;
+            OnMetricsUpdated?.Invoke(this);
         }
 
         /// <summary>

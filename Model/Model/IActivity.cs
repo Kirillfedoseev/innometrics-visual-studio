@@ -6,5 +6,10 @@ namespace Model.Model
     {
         List<Metric> Metrics { get; }
 
+        void CleanMetricsStorage();
+
+        event OnMetricsUpdated OnMetricsUpdated;
     }
+
+    public delegate void OnMetricsUpdated(IActivity metrics);
 }

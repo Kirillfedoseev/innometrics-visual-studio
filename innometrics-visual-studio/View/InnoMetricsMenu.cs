@@ -77,6 +77,12 @@ namespace innometrics_visual_studio.View
 
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            MenuController.Instance.Dispose();
+            base.Dispose(disposing);
+        }
+
         #endregion
     }
 }

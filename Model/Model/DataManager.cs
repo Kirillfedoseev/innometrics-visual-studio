@@ -13,21 +13,11 @@ namespace Model.Model
 
         private AuthData _authData;
 
-        private List<IActivity> _activities;
-
 
         public DataManager()
         {
             LoadData();
             Authenticate(_authData.Email,_authData.Password);
-        }
-
-
-        public DataManager(List<IActivity> activities)
-        {
-            _activities = activities;
-            LoadData();
-            Authenticate(_authData.Email, _authData.Password);
         }
 
 
@@ -52,22 +42,15 @@ namespace Model.Model
         }
 
 
-        public void OnPluginStop()
+        public void OnSendMetrics(IActivity activity)
         {
-            //todo check on errors
+            File.AppendAllLines("output.txt", activity.Metrics.Select(n => n.ToString()).ToArray());
             using (var client = new Client.Client(_authData.Email, _authData.Password))
             {
-                client.SendMetrics(GetAllMetrics());
+                //client.SendMetrics(activity.Metrics);
             }      
             SaveData();
         }
-
-
-        private IEnumerable<IMetric> GetAllMetrics()
-        {           
-            return _activities.SelectMany(n => n.Metrics);
-        }
-
 
         private void LoadData()
         {

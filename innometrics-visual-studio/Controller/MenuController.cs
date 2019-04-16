@@ -18,7 +18,7 @@ namespace innometrics_visual_studio.Controller
     /// The main controller of the plugin
     /// It's singletone and can be created through InitializeAsync only
     /// </summary>
-    public class MenuController
+    public class MenuController:IDisposable
     {
         /// <summary>
         /// Support method to run LogIn form
@@ -58,7 +58,7 @@ namespace innometrics_visual_studio.Controller
         /// Refecrence to the DataManager instance,
         /// which manipulate with collected data
         /// </summary>
-        private DataManager _dataManager;
+        private static DataManager _dataManager;
 
         /// <summary>
         /// Flag, that user are providing auth data and LogIn form is running
@@ -93,9 +93,10 @@ namespace innometrics_visual_studio.Controller
         private MenuController()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            _dataManager = new DataManager();
             IsLoging = false;
-            _activityControllers = new List<AbstractActivityController>();             
+            _activityControllers = new List<AbstractActivityController>();
+            _dataManager = new DataManager();
+
         }
 
 
@@ -130,6 +131,7 @@ namespace innometrics_visual_studio.Controller
                 Instance.Dte.Events.DocumentEvents.DocumentOpened += activityController.StartActivity;
                 Instance.Dte.Events.DocumentEvents.DocumentClosing += activityController.EndActivity;
                 Instance.Dte.Events.TextEditorEvents.LineChanged += activityController.OnChanged;
+                activityController.OnMetricsUpdated += _dataManager.OnSendMetrics;
             }
         }
 
@@ -175,7 +177,6 @@ namespace innometrics_visual_studio.Controller
             IsCanSendData = false;
         }
 
-
         /// <summary>
         /// the event on correct auth data provided by user
         /// Shutdown the login application
@@ -188,6 +189,17 @@ namespace innometrics_visual_studio.Controller
             App.Dispatcher.Invoke(() => App.Shutdown());
             _dataManager.Authenticate(email,password);
             IsLoging = false;
+        }
+
+        /// <summary>
+        /// Dispose the object
+        /// </summary>
+        public void Dispose()
+        {
+            foreach (AbstractActivityController activityController in _activityControllers)
+            {
+                _dataManager.OnSendMetrics(activityController);
+            }
         }
     }
 }
