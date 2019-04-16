@@ -34,6 +34,7 @@ namespace Model.Model
             {
                 _authData = new AuthData(email, password);
                 IsAuthenticated = true;
+                SaveData();
             }
             else
             {
@@ -42,24 +43,28 @@ namespace Model.Model
         }
 
 
-        public void OnSendMetrics(IActivity activity)
+        public void SendMetrics(List<IActivity> activities)
         {
-            File.AppendAllLines("output.txt", activity.Metrics.Select(n => n.ToString()).ToArray());
+            Metric[] metrics = activities.SelectMany(n => n.Metrics).ToArray();
+
+            File.AppendAllLines("output.txt", metrics.Select(n => n.ToString()).ToArray());
+
             using (var client = new Client.Client(_authData.Email, _authData.Password))
             {
-                //client.SendMetrics(activity.Metrics);
-            }      
-            SaveData();
+                client.SendMetrics(metrics);
+            }
+
+            activities.ForEach(n => n.CleanMetricsStorage());
         }
 
         private void LoadData()
         {
+            FileStream fs = null;
             try
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                FileStream fs = new FileStream("auth.dat", FileMode.Open);
+                fs = new FileStream("auth.dat", FileMode.Open);
                 _authData = (AuthData) formatter.Deserialize(fs);
-                fs.Dispose();
             }
             catch (Exception e)
             {
@@ -67,25 +72,25 @@ namespace Model.Model
                 //_authData = new AuthData();
                 _authData = new AuthData("kirill1998fed@yandex.ru", "fkmlbyf123");
             }
-            finally { }
+            finally { fs?.Dispose();}
 
         }
 
 
         private void SaveData()
         {
+            FileStream fs = null;
             try
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                FileStream fs = new FileStream("auth.dat", FileMode.Open);
+                fs = new FileStream("auth.dat", FileMode.Open);
                 formatter.Serialize(fs, _authData);
-                fs.Dispose();
             }
             catch (Exception e)
             {
                 _authData = new AuthData();
             }
-            finally { }
+            finally { fs?.Dispose(); }
         }
     }
 

@@ -19,6 +19,8 @@ namespace innometrics_visual_studio.Controller.ActivityControllers.LOC
 
             if (LinesCount == end.Parent.EndPoint.Line + 1) return;
             changedIndex = start.Line;
+    
+            //todo get line
             if (start.CodeElement[vsCMElement.vsCMElementOther] == null && changedIndex != start.Line)
                 Metrics.Last().IncrementMetric();
 

@@ -9,7 +9,6 @@ using innometrics_visual_studio.Controller.ActivityControllers;
 using LogInForm;
 using Microsoft.VisualStudio.Shell;
 using Model.Model;
-using Task = System.Threading.Tasks.Task;
 using Thread = System.Threading.Thread;
 
 namespace innometrics_visual_studio.Controller
@@ -75,7 +74,11 @@ namespace innometrics_visual_studio.Controller
         /// which provide interface to manage documents of the open project and VS itself
         /// </summary>
         public DTE Dte { get; private set; }
-
+        internal DocumentEvents _docEvents;
+        internal WindowEvents _windowEvents;
+        internal SolutionEvents _solutionEvents;
+        internal TextEditorEvents _editorEvents;
+        internal DTEEvents _dteEvents;
 
         /// <summary>
         /// Gets the instance of the command.
@@ -90,9 +93,17 @@ namespace innometrics_visual_studio.Controller
         /// <summary>
         /// Initialize MenuController instance
         /// </summary>
-        private MenuController()
+        private MenuController(DTE dte)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+
+            Dte = dte;
+
+            _dteEvents = Dte.Events.DTEEvents;
+            _docEvents = Dte.Events.DocumentEvents;
+            _windowEvents = Dte.Events.WindowEvents;
+            _solutionEvents = Dte.Events.SolutionEvents;
+            _editorEvents = Dte.Events.TextEditorEvents;
+
             IsLoging = false;
             _activityControllers = new List<AbstractActivityController>();
             _dataManager = new DataManager();
@@ -104,37 +115,61 @@ namespace innometrics_visual_studio.Controller
         /// Initializes the singleton instance of the MenuController.
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        public static async Task InitializeAsync(AsyncPackage package)
+        public static void Initialize(Package package)
         {
-
             if(package == null) throw new NullReferenceException("The package is null, please, provide reference");
 
-            // Switch to the main thread - the call to AddCommand in ResumeSendData's constructor requires
-            // the UI thread.
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
-
-
-            Instance = new MenuController { Dte = await package.GetServiceAsync(typeof(DTE)) as DTE};
+            Instance = new MenuController ( ((IServiceProvider)package).GetService(typeof(DTE)) as DTE);
             
             //get all subclass of AbstractActivityController, which are represent activities and even new was added, the subClassTypes variable will contain it after restarting
             //therefore no need to change this method after adding new activities
             var subclassTypes = Assembly.GetAssembly(typeof(AbstractActivityController)).GetTypes().Where(t => t.IsSubclassOf(typeof(AbstractActivityController)) && !t.IsAbstract);
             if(Instance.Dte == null) throw new Exception("The plugin was initialize incorrectly, please, restart Visual Studio or reinstall plugin!");
 
+
             foreach (var activityType in subclassTypes)
             {
-                if(!(Activator.CreateInstance(activityType) is AbstractActivityController activityController)) continue;
-
-                Instance._activityControllers.Add(activityController);
-                
-                //Can be change on DTE2 or future DTE3 without any trouble, no other changes required for updating DTE# interface
-                Instance.Dte.Events.DocumentEvents.DocumentOpened += activityController.StartActivity;
-                Instance.Dte.Events.DocumentEvents.DocumentClosing += activityController.EndActivity;
-                Instance.Dte.Events.DocumentEvents.DocumentSaved += activityController.EndActivity;
-
-                Instance.Dte.Events.TextEditorEvents.LineChanged += activityController.OnChanged;
-                activityController.OnMetricsUpdated += _dataManager.OnSendMetrics;
+                if (Activator.CreateInstance(activityType) is AbstractActivityController activityController)
+                    Instance._activityControllers.Add(activityController);
             }
+
+            //Can be change on DTE2 or future DTE3 without any trouble, no other changes required for updating DTE# interface
+            Instance._docEvents.DocumentOpened += StartActivity;
+            Instance._docEvents.DocumentClosing += EndActivity;
+            Instance._docEvents.DocumentSaved += EndActivity;
+            Instance._editorEvents.LineChanged += OnChanged;
+
+        }
+
+        /// <summary>
+        /// The event on start activity
+        /// </summary>
+        /// <param name="document">The document in which activity starts</param>
+        public static void StartActivity(Document document)
+        {
+            Instance._activityControllers.ForEach((n) => n.StartActivity(document));
+        }
+
+
+        /// <summary>
+        /// The event on change document's text
+        /// </summary>
+        /// <param name="start">start point of change</param>
+        /// <param name="end">end point of change</param>
+        /// <param name="i">difference between points</param>
+        public static void OnChanged(TextPoint start, TextPoint end, int i)
+        {
+            Instance._activityControllers.ForEach((n) => n.OnChanged(start, end, i));
+        }
+
+        /// <summary>
+        /// The event on end activity
+        /// </summary>
+        /// <param name="document">The document in which activity starts</param>
+        public static void EndActivity(Document document)
+        {
+            Instance._activityControllers.ForEach((n) => n.EndActivity(document));
+            _dataManager.SendMetrics(Instance._activityControllers.Cast<IActivity>().ToList());
         }
 
         /// <summary>
@@ -198,10 +233,7 @@ namespace innometrics_visual_studio.Controller
         /// </summary>
         public void Dispose()
         {
-            foreach (AbstractActivityController activityController in _activityControllers)
-            {
-                _dataManager.OnSendMetrics(activityController);
-            }
+            _dataManager.SendMetrics(_activityControllers.Cast<IActivity>().ToList());
         }
     }
 }

@@ -32,7 +32,7 @@ namespace innometrics_visual_studio.View.Commands
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
-        private ResumeSendData(AsyncPackage package, OleMenuCommandService commandService)
+        private ResumeSendData(Package package, OleMenuCommandService commandService)
         {
             this.package = package as InnoMetricsMenu ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
@@ -54,19 +54,18 @@ namespace innometrics_visual_studio.View.Commands
         /// <summary>
         /// Gets the service provider from the owner package.
         /// </summary>
-        private IAsyncServiceProvider ServiceProvider => package;
+        private IServiceProvider ServiceProvider => package;
 
         /// <summary>
         /// Initializes the singleton instance of the command.
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        public static async Task InitializeAsync(AsyncPackage package)
+        public static void Initialize(Package package)
         {
             // Switch to the main thread - the call to AddCommand in ResumeSendData's constructor requires
             // the UI thread.
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
-
-            OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
+          
+            OleMenuCommandService commandService = ((IServiceProvider)package).GetService((typeof(IMenuCommandService))) as OleMenuCommandService;
             Instance = new ResumeSendData(package, commandService);
         }
 
