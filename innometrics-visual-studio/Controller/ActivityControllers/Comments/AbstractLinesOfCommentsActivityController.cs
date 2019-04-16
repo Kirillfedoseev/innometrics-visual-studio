@@ -10,6 +10,8 @@ namespace innometrics_visual_studio.Controller.ActivityControllers.Comments
     abstract class AbstractLinesOfCommentsActivityController : AbstractActivityController
     {
         protected int LinesCount;
+        protected int changedIndex;
+
 
         protected AbstractLinesOfCommentsActivityController(string activityType) : base(activityType) { }
 

@@ -8,8 +8,5 @@ namespace Model.Model
 
         void CleanMetricsStorage();
 
-        event OnMetricsUpdated OnMetricsUpdated;
     }
-
-    public delegate void OnMetricsUpdated(IActivity metrics);
 }

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text.RegularExpressions;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 
@@ -9,7 +10,6 @@ namespace innometrics_visual_studio.Controller.ActivityControllers.Tests
     /// </summary>
     class ChangedTestsController : AbstractTestsActivityController
     {
-        private int changedIndex;
 
         public ChangedTestsController() : base("vs_tests_changed") { }
 
@@ -18,10 +18,14 @@ namespace innometrics_visual_studio.Controller.ActivityControllers.Tests
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (LinesCount == end.Parent.EndPoint.Line + 1) return;
+            if (changedIndex == start.Line) return;
+
+            var text = start.Parent.CreateEditPoint(start.Parent.StartPoint).GetText(start.Parent.EndPoint);
+            int testsCount = Regex.Matches(text, $@"\[TestMethod\]").Count;
+            if (testsCount != TestsCount) return;
+                                
             changedIndex = start.Line;
-            if (start.CodeElement[vsCMElement.vsCMElementOther] == null && changedIndex != start.Line)
-                Metrics.Last().IncrementMetric();
+            Metrics.Last().IncrementMetric();
 
             LinesCount = end.Parent.EndPoint.Line + 1;
         }

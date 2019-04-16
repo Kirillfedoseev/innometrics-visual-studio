@@ -12,7 +12,10 @@ namespace innometrics_visual_studio.Controller.ActivityControllers.Tests
     abstract class AbstractTestsActivityController : AbstractActivityController
     {
         protected int LinesCount;
+        protected int changedIndex;
         protected int TestsCount;
+        
+
 
         /// <inheritdoc />
         protected AbstractTestsActivityController(string activityType) : base(activityType) { }

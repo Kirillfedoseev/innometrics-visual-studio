@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using Client;
 
 namespace Model.Model
 {
@@ -12,7 +11,6 @@ namespace Model.Model
         public bool IsAuthenticated { get; private set; }
 
         private AuthData _authData;
-
 
         public DataManager()
         {
@@ -47,6 +45,7 @@ namespace Model.Model
         {
             Metric[] metrics = activities.SelectMany(n => n.Metrics).ToArray();
 
+            //todo delte only for debug
             File.AppendAllLines("output.txt", metrics.Select(n => n.ToString()).ToArray());
 
             using (var client = new Client.Client(_authData.Email, _authData.Password))

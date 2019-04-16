@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text.RegularExpressions;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 
@@ -9,7 +10,6 @@ namespace innometrics_visual_studio.Controller.ActivityControllers.LOC
     /// </summary>
     class ChangedLinesOfCodeActivityController : AbstractLinesOfCodeActivityController
     {
-        private int changedIndex;
 
         public ChangedLinesOfCodeActivityController() : base("vs_lines_changed") { }
 
@@ -17,14 +17,18 @@ namespace innometrics_visual_studio.Controller.ActivityControllers.LOC
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (LinesCount == end.Parent.EndPoint.Line + 1) return;
-            changedIndex = start.Line;
-    
-            //todo get line
-            if (start.CodeElement[vsCMElement.vsCMElementOther] == null && changedIndex != start.Line)
-                Metrics.Last().IncrementMetric();
+            if (changedIndex == start.Line) return;
+            if (LinesCount != end.Parent.EndPoint.Line + 1) return;
 
+            var text = start.Parent.CreateEditPoint(start.Parent.StartPoint).GetText(start.Parent.EndPoint).Split('\n')[start.Line];
+
+            bool isComment = Regex.Matches(text, @"//(.*?)\r?\n?").Count != 0;
+            if (isComment) return;
+
+
+            Metrics.Last().IncrementMetric();
             LinesCount = end.Parent.EndPoint.Line + 1;
+
         }
     }
 }

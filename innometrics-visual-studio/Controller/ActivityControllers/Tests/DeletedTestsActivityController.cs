@@ -16,13 +16,13 @@ namespace innometrics_visual_studio.Controller.ActivityControllers.Tests
         public override void OnChanged(TextPoint start, TextPoint end, int i)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
+            if (changedIndex == start.Line) return;
+
             var text = start.Parent.CreateEditPoint(start.Parent.StartPoint).GetText(start.Parent.EndPoint);
             int testsCount = Regex.Matches(text, $@"\[TestMethod\]").Count;
-            if (LinesCount >= end.Parent.EndPoint.Line + 1) return;
 
-            if (start.CodeElement[vsCMElement.vsCMElementOther] == null)
-                Metrics.Last().IncrementMetric();
-
+            if (TestsCount <= testsCount) return;
+            Metrics.Last().IncrementMetric();
             LinesCount = end.Parent.EndPoint.Line + 1;
             TestsCount = testsCount;
 

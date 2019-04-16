@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Authentication;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -19,13 +20,13 @@ namespace Client
                 try
                 {
                     bool result;
-                    using (var client = new Client())
-                    {
+                    var client = new Client();
+                    
                         var authToken = client.GetAuthToken(username, password);
                         client.ApiClient.DefaultRequestHeaders.Authorization 
                             = new AuthenticationHeaderValue("Bearer", authToken);
                         result = authToken != null;
-                    }
+                    
                     return result;
                 }
                 catch (Exception e)
@@ -104,7 +105,7 @@ namespace Client
                 throw new AuthenticationException($"Login failed with error: {response.StatusCode} {response.ReasonPhrase} ");
 
             var resp = response.Content.ReadAsStringAsync().Result;
-            
+
             return (string)JObject.Parse(resp)["token"];
         }
 

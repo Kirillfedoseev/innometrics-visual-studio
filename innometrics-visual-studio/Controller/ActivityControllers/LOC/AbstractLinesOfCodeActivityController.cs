@@ -10,6 +10,7 @@ namespace innometrics_visual_studio.Controller.ActivityControllers.LOC
     abstract class  AbstractLinesOfCodeActivityController : AbstractActivityController
     {
         protected int LinesCount;
+        protected int changedIndex;
 
         protected AbstractLinesOfCodeActivityController(string activityType) : base(activityType){}
 

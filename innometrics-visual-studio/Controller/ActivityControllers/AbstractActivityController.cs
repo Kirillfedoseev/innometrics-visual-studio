@@ -31,9 +31,12 @@ namespace innometrics_visual_studio.Controller.ActivityControllers
         /// </summary>
         public List<Metric> Metrics { get; }
 
+
+        /// <summary>
+        /// Then all metrics was retrieved from lists
+        /// </summary>
         public void CleanMetricsStorage() => Metrics.Clear();
 
-        public event OnMetricsUpdated OnMetricsUpdated;
 
 
         /// <summary>
@@ -61,7 +64,6 @@ namespace innometrics_visual_studio.Controller.ActivityControllers
             if(!IsRecording) return;
             Metrics.Last().EndTime = DateTime.Now;
             IsRecording = false;
-            OnMetricsUpdated?.Invoke(this);
         }
 
         /// <summary>

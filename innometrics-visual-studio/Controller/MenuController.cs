@@ -7,6 +7,9 @@ using System.Windows;
 using EnvDTE;
 using innometrics_visual_studio.Controller.ActivityControllers;
 using LogInForm;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Shell;
 using Model.Model;
 using Thread = System.Threading.Thread;
@@ -73,12 +76,16 @@ namespace innometrics_visual_studio.Controller
         /// Reference to DTE instance of Visual studio,
         /// which provide interface to manage documents of the open project and VS itself
         /// </summary>
-        public DTE Dte { get; private set; }
-        internal DocumentEvents _docEvents;
-        internal WindowEvents _windowEvents;
-        internal SolutionEvents _solutionEvents;
-        internal TextEditorEvents _editorEvents;
-        internal DTEEvents _dteEvents;
+        public DTE Dte { get; }
+        internal DocumentEvents _docEvents { get; }
+        internal WindowEvents _windowEvents { get; }
+        internal SolutionEvents _solutionEvents { get; }
+        internal TextEditorEvents _editorEvents { get; }
+        internal DTEEvents _dteEvents { get; }
+
+
+        public static Package package;
+
 
         /// <summary>
         /// Gets the instance of the command.
@@ -117,7 +124,7 @@ namespace innometrics_visual_studio.Controller
         /// <param name="package">Owner package, not null.</param>
         public static void Initialize(Package package)
         {
-            if(package == null) throw new NullReferenceException("The package is null, please, provide reference");
+            MenuController.package = package ?? throw new NullReferenceException("The package is null, please, provide reference");
 
             Instance = new MenuController ( ((IServiceProvider)package).GetService(typeof(DTE)) as DTE);
             
@@ -147,6 +154,7 @@ namespace innometrics_visual_studio.Controller
         /// <param name="document">The document in which activity starts</param>
         public static void StartActivity(Document document)
         {
+            if(!Instance.IsCanSendData) return;
             Instance._activityControllers.ForEach((n) => n.StartActivity(document));
         }
 
@@ -159,6 +167,8 @@ namespace innometrics_visual_studio.Controller
         /// <param name="i">difference between points</param>
         public static void OnChanged(TextPoint start, TextPoint end, int i)
         {
+            if (!Instance.IsCanSendData) return;
+
             Instance._activityControllers.ForEach((n) => n.OnChanged(start, end, i));
         }
 
@@ -168,8 +178,12 @@ namespace innometrics_visual_studio.Controller
         /// <param name="document">The document in which activity starts</param>
         public static void EndActivity(Document document)
         {
+            if (!Instance.IsCanSendData) return;
+
             Instance._activityControllers.ForEach((n) => n.EndActivity(document));
-            _dataManager.SendMetrics(Instance._activityControllers.Cast<IActivity>().ToList());
+
+            if (_dataManager.IsAuthenticated)
+                _dataManager.SendMetrics(Instance._activityControllers.Cast<IActivity>().ToList());
         }
 
         /// <summary>
@@ -180,7 +194,6 @@ namespace innometrics_visual_studio.Controller
         {
             _dataManager.UnAuthenticate();
         }
-
 
         /// <summary>
         /// The event on login click button
