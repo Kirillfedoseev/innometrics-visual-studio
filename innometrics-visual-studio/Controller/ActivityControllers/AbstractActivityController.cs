@@ -58,6 +58,7 @@ namespace innometrics_visual_studio.Controller.ActivityControllers
         /// <param name="document">The document in which activity starts</param>
         public void EndActivity(Document document)
         {
+            if(!IsRecording) return;
             Metrics.Last().EndTime = DateTime.Now;
             IsRecording = false;
             OnMetricsUpdated?.Invoke(this);

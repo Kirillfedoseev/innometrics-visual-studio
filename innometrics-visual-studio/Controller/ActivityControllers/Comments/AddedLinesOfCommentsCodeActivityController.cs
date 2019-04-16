@@ -13,8 +13,6 @@ namespace innometrics_visual_studio.Controller.ActivityControllers.Comments
 
         public override void OnChanged(TextPoint start, TextPoint end, int i)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            ThreadHelper.ThrowIfNotOnUIThread();
 
             if (LinesCount >= end.Parent.EndPoint.Line + 1) return;
 

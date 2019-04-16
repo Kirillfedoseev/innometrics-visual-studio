@@ -130,6 +130,8 @@ namespace innometrics_visual_studio.Controller
                 //Can be change on DTE2 or future DTE3 without any trouble, no other changes required for updating DTE# interface
                 Instance.Dte.Events.DocumentEvents.DocumentOpened += activityController.StartActivity;
                 Instance.Dte.Events.DocumentEvents.DocumentClosing += activityController.EndActivity;
+                Instance.Dte.Events.DocumentEvents.DocumentSaved += activityController.EndActivity;
+
                 Instance.Dte.Events.TextEditorEvents.LineChanged += activityController.OnChanged;
                 activityController.OnMetricsUpdated += _dataManager.OnSendMetrics;
             }
