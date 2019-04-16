@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using innometrics_visual_studio.Controller;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 
@@ -37,7 +38,7 @@ namespace innometrics_visual_studio.View.Commands
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
             var menuCommandID = new CommandID(CommandSet, CommandId);
-            var menuItem = new MenuCommand(this.Execute, menuCommandID);
+            var menuItem = new MenuCommand(Execute, menuCommandID);
             commandService.AddCommand(menuItem);
         }
 
@@ -53,7 +54,7 @@ namespace innometrics_visual_studio.View.Commands
         /// <summary>
         /// Gets the service provider from the owner package.
         /// </summary>
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider => this.package;
+        private IAsyncServiceProvider ServiceProvider => package;
 
         /// <summary>
         /// Initializes the singleton instance of the command.
@@ -79,7 +80,7 @@ namespace innometrics_visual_studio.View.Commands
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            package.Controller.OnLogoutClick();
+            MenuController.Instance.OnLogoutClick();
 
         }
     }

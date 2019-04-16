@@ -88,10 +88,17 @@ namespace innometrics_visual_studio.Controller
             Instance = new MenuController { Dte = await package.GetServiceAsync((typeof(DTE))) as DTE};
 
             var subclassTypes = Assembly.GetAssembly(typeof(AbstractActivityController)).GetTypes().Where(t => t.IsSubclassOf(typeof(AbstractActivityController)) && !t.IsAbstract);
+            if(Instance.Dte == null) throw new Exception("The plugin was initialize incorrectly, please, restart Visual Studio or reinstall plugin!");
+
             foreach (var activityType in subclassTypes)
             {
-                var activityController = Activator.CreateInstance(activityType) as AbstractActivityController;
+                if(!(Activator.CreateInstance(activityType) is AbstractActivityController activityController)) continue;
+
                 Instance._activityControllers.Add(activityController);
+
+                Instance.Dte.Events.DocumentEvents.DocumentOpened += activityController.StartActivity;
+                Instance.Dte.Events.DocumentEvents.DocumentClosing += activityController.EndActivity;
+                Instance.Dte.Events.TextEditorEvents.LineChanged += activityController.OnChanged;
             }
         }
 

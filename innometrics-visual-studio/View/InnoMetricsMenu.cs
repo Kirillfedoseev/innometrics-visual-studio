@@ -40,8 +40,6 @@ namespace innometrics_visual_studio.View
         /// </summary>
         public const string PackageGuidString = "2fe52e27-a160-48be-b065-4bb5bdec6b0c";
 
-        public MenuController Controller;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="InnoMetricsMenu"/> class.
         /// </summary>
@@ -78,10 +76,6 @@ namespace innometrics_visual_studio.View
 
 
         }
-
-
-        
-
 
         #endregion
     }
