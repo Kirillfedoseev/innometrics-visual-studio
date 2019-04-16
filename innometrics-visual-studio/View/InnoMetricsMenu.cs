@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Threading;
+using innometrics_visual_studio.Controller;
 using innometrics_visual_studio.View.Commands;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
@@ -26,9 +27,11 @@ namespace innometrics_visual_studio.View
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [InstalledProductRegistration("#1110", "#1112", "1.0", IconResourceID = 1400)] // Info on this package for Help/About
+    [InstalledProductRegistration("#1110", "#1112", "1.0", IconResourceID =
+        1400)] // Info on this package for Help/About
     [Guid(InnoMetricsMenu.PackageGuidString)]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly",
+        Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     public sealed class InnoMetricsMenu : AsyncPackage
     {
@@ -37,21 +40,19 @@ namespace innometrics_visual_studio.View
         /// </summary>
         public const string PackageGuidString = "2fe52e27-a160-48be-b065-4bb5bdec6b0c";
 
-        public MenuController Controller;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="InnoMetricsMenu"/> class.
         /// </summary>
         public InnoMetricsMenu()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             // Inside this method you can place any initialization code that does not require
             // any Visual Studio service because at this point the package object is created but
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
-
-
-            Controller = new MenuController();
         }
+
+
 
         #region Package Members
 
@@ -71,6 +72,9 @@ namespace innometrics_visual_studio.View
             await LogOut.InitializeAsync(this);
             await SendData.InitializeAsync(this);
             await ResumeSendData.InitializeAsync(this);
+            await MenuController.InitializeAsync(this);
+
+
         }
 
         #endregion

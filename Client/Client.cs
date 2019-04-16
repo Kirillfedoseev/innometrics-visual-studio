@@ -7,7 +7,7 @@ using System.Security.Authentication;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace ApiClient
+namespace Client
 {
     public class Client:IDisposable
     {

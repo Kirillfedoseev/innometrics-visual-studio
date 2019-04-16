@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using ApiClient;
 
 namespace LogInForm
 {
@@ -84,7 +83,7 @@ namespace LogInForm
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            if (Client.IsAuthDataCorrect(EmailInput.Text, PasswordInput.Password))
+            if (Client.Client.IsAuthDataCorrect(EmailInput.Text, PasswordInput.Password))
             {
                 //todo send data to model
                 ErrorLabel.Visibility = Visibility.Hidden;

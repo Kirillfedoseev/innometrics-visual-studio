@@ -1,11 +1,10 @@
-﻿
-using innometrics_visual_studio.Model.Metrics;
+﻿using System.Collections.Generic;
 
-namespace innometrics_visual_studio.Controller
+namespace Model.Model
 {
     public interface IActivity
     {
-        Metric Metric { get; }
+        List<Metric> Metrics { get; }
 
     }
 }
