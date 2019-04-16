@@ -1,10 +1,12 @@
 ﻿using EnvDTE;
-using EnvDTE80;
-using innometrics_visual_studio.Model.Metrics;
 using Microsoft.VisualStudio.Shell;
+using Model.Model;
 
-namespace innometrics_visual_studio.Controller.ActivityControllers
+namespace innometrics_visual_studio.Controller.ActivityControllers.Comments
 {
+    /// <summary>
+    /// Abstract activity controller, which are associated with comments
+    /// </summary>
     abstract class AbstractLinesOfCommentsActivityController : AbstractActivityController
     {
         protected int LinesCount;

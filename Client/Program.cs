@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ApiClient
+﻿namespace Client
 {
     class Program
     {

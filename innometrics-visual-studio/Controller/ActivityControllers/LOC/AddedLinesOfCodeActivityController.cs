@@ -2,9 +2,12 @@
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 
-namespace innometrics_visual_studio.Controller.ActivityControllers
+namespace innometrics_visual_studio.Controller.ActivityControllers.LOC
 {
-    class  AddedLinesOfCodeActivityController:  AbstractLinesOfCodeActivityController
+    /// <summary>
+    /// Activity controller, which records adding of LOC
+    /// </summary>
+    class AddedLinesOfCodeActivityController :  AbstractLinesOfCodeActivityController
     {
         public AddedLinesOfCodeActivityController() : base("vs_lines_added"){}
 

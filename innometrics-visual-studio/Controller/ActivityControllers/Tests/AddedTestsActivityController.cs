@@ -3,12 +3,17 @@ using System.Text.RegularExpressions;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 
-namespace innometrics_visual_studio.Controller.ActivityControllers
+namespace innometrics_visual_studio.Controller.ActivityControllers.Tests
 {
+    /// <summary>
+    /// Activity controller, which records adding of tests
+    /// </summary>
     class AddedTestsActivityController : AbstractTestsActivityController
     {
         public AddedTestsActivityController() : base("vs_tests_added") { }
 
+
+        /// <inheritdoc />
         public override void OnChanged(TextPoint start, TextPoint end, int i)
         {
             ThreadHelper.ThrowIfNotOnUIThread();

@@ -2,8 +2,11 @@
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 
-namespace innometrics_visual_studio.Controller.ActivityControllers
+namespace innometrics_visual_studio.Controller.ActivityControllers.Comments
 {
+    /// <summary>
+    /// Activity controller, which records adding of comments
+    /// </summary>
     class AddedLinesOfCommentsCodeActivityController : AbstractLinesOfCommentsActivityController
     {
         public AddedLinesOfCommentsCodeActivityController() : base("vs_comments_added") { }

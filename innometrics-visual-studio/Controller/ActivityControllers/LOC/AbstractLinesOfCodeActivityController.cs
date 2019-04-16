@@ -1,9 +1,12 @@
 ﻿using EnvDTE;
-using innometrics_visual_studio.Model.Metrics;
 using Microsoft.VisualStudio.Shell;
+using Model.Model;
 
-namespace innometrics_visual_studio.Controller.ActivityControllers
+namespace innometrics_visual_studio.Controller.ActivityControllers.LOC
 {
+    /// <summary>
+    /// Abstract activity controller, which are associated with LOC
+    /// </summary>
     abstract class  AbstractLinesOfCodeActivityController : AbstractActivityController
     {
         protected int LinesCount;
@@ -11,7 +14,7 @@ namespace innometrics_visual_studio.Controller.ActivityControllers
         protected AbstractLinesOfCodeActivityController(string activityType) : base(activityType){}
 
 
-
+        /// <inheritdoc />
         public override void StartActivity(Document document)
         {
             ThreadHelper.ThrowIfNotOnUIThread();

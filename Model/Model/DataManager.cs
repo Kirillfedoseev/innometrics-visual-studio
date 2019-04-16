@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using ApiClient;
-using innometrics_visual_studio.Controller;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using Client;
 
-namespace innometrics_visual_studio.Model
+namespace Model.Model
 {
     public class DataManager
     {
@@ -41,7 +40,7 @@ namespace innometrics_visual_studio.Model
 
         public void Authenticate(string email, string password)
         {
-            if (Client.IsAuthDataCorrect(email, password))
+            if (Client.Client.IsAuthDataCorrect(email, password))
             {
                 _authData = new AuthData(email, password);
                 IsAuthenticated = true;
@@ -56,7 +55,7 @@ namespace innometrics_visual_studio.Model
         public void OnPluginStop()
         {
             //todo check on errors
-            using (var client = new Client(_authData.Email, _authData.Password))
+            using (var client = new Client.Client(_authData.Email, _authData.Password))
             {
                 client.SendMetrics(GetAllMetrics());
             }      

@@ -2,8 +2,11 @@
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 
-namespace innometrics_visual_studio.Controller.ActivityControllers
+namespace innometrics_visual_studio.Controller.ActivityControllers.LOC
 {
+    /// <summary>
+    /// Activity controller, which records changing of LOC
+    /// </summary>
     class ChangedLinesOfCodeActivityController : AbstractLinesOfCodeActivityController
     {
         private int changedIndex;

@@ -1,12 +1,16 @@
 ﻿using System.Linq;
 using EnvDTE;
+using innometrics_visual_studio.Controller.ActivityControllers.LOC;
 using Microsoft.VisualStudio.Shell;
 
-namespace innometrics_visual_studio.Controller.ActivityControllers
+namespace innometrics_visual_studio.Controller.ActivityControllers.Comments
 {
+    /// <summary>
+    /// Activity controller, which records changing of comments
+    /// </summary>
     class ChangedLinesOfCommentsActivityController : AbstractLinesOfCodeActivityController
     {
-        private int changedIndex;
+        private int _changedIndex;
 
         public ChangedLinesOfCommentsActivityController() : base("vs_comments_changed") { }
 
@@ -15,8 +19,8 @@ namespace innometrics_visual_studio.Controller.ActivityControllers
             ThreadHelper.ThrowIfNotOnUIThread();
 
             if (LinesCount == end.Parent.EndPoint.Line + 1) return;
-            changedIndex = start.Line;
-            if (start.CodeElement[vsCMElement.vsCMElementOther] != null && changedIndex != start.Line)
+            _changedIndex = start.Line;
+            if (start.CodeElement[vsCMElement.vsCMElementOther] != null && _changedIndex != start.Line)
                 Metrics.Last().IncrementMetric();
 
             LinesCount = end.Parent.EndPoint.Line + 1;

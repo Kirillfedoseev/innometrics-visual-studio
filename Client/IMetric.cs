@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ApiClient
+namespace Client
 {
     public interface IMetric
     {

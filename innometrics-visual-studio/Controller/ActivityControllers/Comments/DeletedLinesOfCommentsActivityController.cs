@@ -1,9 +1,13 @@
 ﻿using System.Linq;
 using EnvDTE;
+using innometrics_visual_studio.Controller.ActivityControllers.LOC;
 using Microsoft.VisualStudio.Shell;
 
-namespace innometrics_visual_studio.Controller.ActivityControllers
+namespace innometrics_visual_studio.Controller.ActivityControllers.Comments
 {
+    /// <summary>
+    /// Activity controller, which records deleting of comments
+    /// </summary>
     class DeletedLinesOfCommentsActivityController : AbstractLinesOfCodeActivityController
     {
         public DeletedLinesOfCommentsActivityController() : base("vs_comments_deleted") { }

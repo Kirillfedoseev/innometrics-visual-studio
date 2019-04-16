@@ -1,20 +1,24 @@
 ﻿using System.Text.RegularExpressions;
 using EnvDTE;
-using EnvDTE80;
-using innometrics_visual_studio.Model.Metrics;
 using Microsoft.VisualStudio.Shell;
+using Model.Model;
 
-namespace innometrics_visual_studio.Controller.ActivityControllers
+namespace innometrics_visual_studio.Controller.ActivityControllers.Tests
 {
+
+    /// <summary>
+    /// Abstract activity controller, which are associated with tests
+    /// </summary>
     abstract class AbstractTestsActivityController : AbstractActivityController
     {
         protected int LinesCount;
         protected int TestsCount;
 
+        /// <inheritdoc />
         protected AbstractTestsActivityController(string activityType) : base(activityType) { }
 
 
-
+        /// <inheritdoc />
         public override void StartActivity(Document document)
         {
             ThreadHelper.ThrowIfNotOnUIThread();

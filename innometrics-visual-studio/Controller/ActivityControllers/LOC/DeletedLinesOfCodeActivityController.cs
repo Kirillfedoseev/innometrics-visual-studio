@@ -2,8 +2,11 @@
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 
-namespace innometrics_visual_studio.Controller.ActivityControllers
+namespace innometrics_visual_studio.Controller.ActivityControllers.LOC
 {
+    /// <summary>
+    /// Activity controller, which records deleting of LOC
+    /// </summary>
     class DeletedLinesOfCodeActivityController : AbstractLinesOfCodeActivityController
     {
         public DeletedLinesOfCodeActivityController() : base("vs_lines_deleted") { }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using ApiClient;
+using Client;
 
-namespace innometrics_visual_studio.Model.Metrics
+namespace Model.Model
 {
     public class Metric:IMetric
     {
