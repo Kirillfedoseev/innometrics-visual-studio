@@ -2,8 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Threading;
-using EnvDTE;
-using EnvDTE80;
 using innometrics_visual_studio.Controller;
 using innometrics_visual_studio.View.Commands;
 using Microsoft.VisualStudio.Shell;
@@ -29,9 +27,11 @@ namespace innometrics_visual_studio.View
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [InstalledProductRegistration("#1110", "#1112", "1.0", IconResourceID = 1400)] // Info on this package for Help/About
+    [InstalledProductRegistration("#1110", "#1112", "1.0", IconResourceID =
+        1400)] // Info on this package for Help/About
     [Guid(InnoMetricsMenu.PackageGuidString)]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly",
+        Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     public sealed class InnoMetricsMenu : AsyncPackage
     {
@@ -47,13 +47,14 @@ namespace innometrics_visual_studio.View
         /// </summary>
         public InnoMetricsMenu()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             // Inside this method you can place any initialization code that does not require
             // any Visual Studio service because at this point the package object is created but
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
-            var dte2 = (DTE2) GetService(typeof(DTE2));
-            Controller = new MenuController(dte2);
         }
+
+
 
         #region Package Members
 
@@ -73,7 +74,14 @@ namespace innometrics_visual_studio.View
             await LogOut.InitializeAsync(this);
             await SendData.InitializeAsync(this);
             await ResumeSendData.InitializeAsync(this);
+            await MenuController.InitializeAsync(this);
+
+
         }
+
+
+        
+
 
         #endregion
     }

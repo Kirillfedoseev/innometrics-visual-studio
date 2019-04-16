@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using EnvDTE;
 using EnvDTE80;
@@ -10,7 +11,7 @@ namespace innometrics_visual_studio.Controller.ActivityControllers
 {
     public abstract class AbstractActivityController:IActivity
     {
-        protected DTE2 _application;
+        protected DTE _application;
 
         protected readonly string _activityType;
 
@@ -26,11 +27,12 @@ namespace innometrics_visual_studio.Controller.ActivityControllers
             Metrics = new List<Metric>();
 
             _activityType = activityType;
-            VsShellUtilities.
-            _application = MenuController.Dte2;
+            
+            _application = MenuController.Instance.Dte;
             _application.Events.DocumentEvents.DocumentOpened += StartActivity;
             _application.Events.DocumentEvents.DocumentClosing += EndActivity;
             _application.Events.TextEditorEvents.LineChanged += OnChanged;
+            File.WriteAllText("outpu.txt",_application.Name);
         }
 
         public abstract void StartActivity(Document document);

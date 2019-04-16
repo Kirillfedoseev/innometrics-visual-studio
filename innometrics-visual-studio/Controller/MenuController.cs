@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using EnvDTE;
 using EnvDTE80;
 using innometrics_visual_studio.Controller.ActivityControllers;
 using innometrics_visual_studio.Model;
 using LogInForm;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using Task = System.Threading.Tasks.Task;
+using Thread = System.Threading.Thread;
 
 namespace innometrics_visual_studio.Controller
 {
@@ -45,19 +52,46 @@ namespace innometrics_visual_studio.Controller
 
         public bool IsCanSendData { get; private set; }
 
-        public static DTE2 Dte2;
+        public DTE Dte { get; private set; }
 
-        public MenuController(DTE2 dte2)
+
+        /// <summary>
+        /// Gets the instance of the command.
+        /// </summary>
+        public static MenuController Instance
         {
+            get;
+            private set;
+        }
+
+
+
+        public MenuController()
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
             _dataManager = new DataManager();
             IsLoging = false;
-            _activityControllers = new List<AbstractActivityController>();
-            Dte2 = dte2;
+            _activityControllers = new List<AbstractActivityController>();             
+        }
+
+
+        /// <summary>
+        /// Initializes the singleton instance of the command.
+        /// </summary>
+        /// <param name="package">Owner package, not null.</param>
+        public static async Task InitializeAsync(AsyncPackage package)
+        {
+            // Switch to the main thread - the call to AddCommand in ResumeSendData's constructor requires
+            // the UI thread.
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
+
+            Instance = new MenuController { Dte = await package.GetServiceAsync((typeof(DTE))) as DTE};
+
             var subclassTypes = Assembly.GetAssembly(typeof(AbstractActivityController)).GetTypes().Where(t => t.IsSubclassOf(typeof(AbstractActivityController)) && !t.IsAbstract);
             foreach (var activityType in subclassTypes)
             {
                 var activityController = Activator.CreateInstance(activityType) as AbstractActivityController;
-                _activityControllers.Add(activityController);
+                Instance._activityControllers.Add(activityController);
             }
         }
 

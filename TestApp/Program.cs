@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Windows;
 using LogInForm;
+using EnvDTE80;
 
 namespace TestApp
 {
@@ -11,40 +12,43 @@ namespace TestApp
 
         static void Main(string[] args)
         {
-            Action<string,string> OnCorrectDataProvided = (s, s1) => Console.WriteLine($@"{s}  {s1}");
+            
+           // Console.WriteLine(Support.GetCurrent().Name);
 
-            var appthread = new Thread(new ThreadStart(() =>
-            {
-                app = new App {ShutdownMode = ShutdownMode.OnExplicitShutdown};
-                app.Run();
-            }));
-            appthread.SetApartmentState(ApartmentState.STA);
-            appthread.Start();
-            AuthData authData;
+            //Action<string,string> OnCorrectDataProvided = (s, s1) => Console.WriteLine($@"{s}  {s1}");
 
-            while (true)
-            {
-                var key = Console.ReadKey().Key;
-                // Press 1 to create a window
-                if (key == ConsoleKey.D1)
-                {
-                    // Use of dispatcher necessary as this is a cross-thread operation
-                    app.Dispatcher.Invoke(() =>
-                    {
-                        MainWindow window = new MainWindow();
-                        window.OnCorrectDataProvided = (s, s1) => authData = new AuthData(s, s1);
-                        window.Show();
-                    });
-                }
+            //var appthread = new Thread(new ThreadStart(() =>
+            //{
+            //    app = new App {ShutdownMode = ShutdownMode.OnExplicitShutdown};
+            //    app.Run();
+            //}));
+            //appthread.SetApartmentState(ApartmentState.STA);
+            //appthread.Start();
+            //AuthData authData;
 
-                // Press 2 to exit
-                if (key == ConsoleKey.D2)
-                {
+            //while (true)
+            //{
+            //    var key = Console.ReadKey().Key;
+            //    // Press 1 to create a window
+            //    if (key == ConsoleKey.D1)
+            //    {
+            //        // Use of dispatcher necessary as this is a cross-thread operation
+            //        app.Dispatcher.Invoke(() =>
+            //        {
+            //            MainWindow window = new MainWindow();
+            //            window.OnCorrectDataProvided = (s, s1) => authData = new AuthData(s, s1);
+            //            window.Show();
+            //        });
+            //    }
 
-                    app.Dispatcher.Invoke(() => app.Shutdown());
-                    break;
-                }
-            }
+            //    // Press 2 to exit
+            //    if (key == ConsoleKey.D2)
+            //    {
+
+            //        app.Dispatcher.Invoke(() => app.Shutdown());
+            //        break;
+            //    }
+            //}
         }
 
     }
